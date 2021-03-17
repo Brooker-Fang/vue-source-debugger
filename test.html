@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./dist/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+  </div>
+  <script>
+    Vue.component('comp', {
+      name: 'comp',
+      template: '<div><child @child-click="childClick"></child></div>',
+      components: {
+        child: {
+          name: 'child',
+          template: '<div>i am {{name}}</div>',
+          data(){
+            return {
+              name: 'child',
+              comObj: {
+                childObjName: 'childObjName'
+              }
+            }
+          }
+        }
+      },
+      data() {
+        return {
+          name: 'fhh',
+          comObj: {
+            comObjName: 'comObjName'
+          }
+        }
+      },
+      mounted () {
+        $on('my-click')
+      },
+      methods: {
+        childClick () {
+          console.log('child click')
+        }
+      }
+    })
+    const app = new Vue({
+      el: '#app',
+      template: '<div id="app"><h1>{{appName}}</h1><comp></comp></div>',
+      data(){
+        return {
+          appName: 'vue',
+          appObj: {
+            appObjName: 'app vue'
+          }
+        }
+      }
+    })
+    console.log(app)
+  </script>
+</body>
+</html>
