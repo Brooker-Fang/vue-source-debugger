@@ -49,7 +49,6 @@ export default class Watcher {
     options?: ?Object,
     isRenderWatcher?: boolean
   ) {
-    debugger
     this.vm = vm
     if (isRenderWatcher) {
       vm._watcher = this

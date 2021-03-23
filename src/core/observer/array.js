@@ -6,6 +6,7 @@
 import { def } from '../util/index'
 
 const arrayProto = Array.prototype
+// 复制数组的原型
 export const arrayMethods = Object.create(arrayProto)
 
 const methodsToPatch = [
@@ -17,10 +18,18 @@ const methodsToPatch = [
   'sort',
   'reverse'
 ]
-
+// export function def (obj: Object, key: string, val: any, enumerable?: boolean) {
+//   Object.defineProperty(obj, key, {
+//     value: val,
+//     enumerable: !!enumerable,
+//     writable: true,
+//     configurable: true
+//   })
+// }
 /**
  * Intercept mutating methods and emit events
  */
+// 覆盖方法
 methodsToPatch.forEach(function (method) {
   // cache original method
   const original = arrayProto[method]
@@ -28,9 +37,9 @@ methodsToPatch.forEach(function (method) {
     // 数组方法的默认行为
     const result = original.apply(this, args)
 
-    // 变更通知：获取小管家
+    // 获取数组的observer对象，主要为了获取ob.dep，用于通知更新
     const ob = this.__ob__
-    // 插入操作：会导致新元素进入，他们需要社会主义教育
+    // 插入操作：会导致新元素进入，需要做响应式处理
     let inserted
     switch (method) {
       case 'push':
@@ -43,7 +52,7 @@ methodsToPatch.forEach(function (method) {
     }
     if (inserted) ob.observeArray(inserted)
     // notify change
-    // 小管家通知更新
+    // 通知更新
     ob.dep.notify()
     return result
   })
