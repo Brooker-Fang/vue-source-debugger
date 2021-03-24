@@ -119,9 +119,7 @@ function getOuterHTML (el: Element): string {
 }
 
 Vue.compile = compileToFunctions
-// 这个文件作用：
 // 1 扩展了 Vue.prototype.$mount的方法
-// 
 // 2 定义了Vue.compile静态方法
 export default Vue
 

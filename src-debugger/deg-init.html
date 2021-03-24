@@ -2,21 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <script src="./dist/vue.js"></script>
 </head>
 <body>
-  <div id="app">
-  </div>
+  <div id="app"></div>
+  <script src="../dist/vue.js"></script>
   <script>
-    Vue.component('comp', {
+     Vue.component('comp', {
       name: 'comp',
       template: '<div><child @child-click="childClick"></child></div>',
       components: {
         child: {
           name: 'child',
           template: '<div>i am {{name}}</div>',
+          created() {
+            console.log('child created')
+          },
+          mounted() {
+            console.log('child mounted')
+          },
           data(){
             return {
               name: 'child',
@@ -27,6 +33,12 @@
           }
         }
       },
+      created() {
+        console.log('comp create')
+      },
+      mounted() {
+        console.log('comp mounted')
+      },
       data() {
         return {
           name: 'fhh',
@@ -35,27 +47,27 @@
           }
         }
       },
-      mounted () {
-        this.$on('my-click')
-      },
-      methods: {
-        childClick () {
-          console.log('child click')
-        }
-      }
     })
     const app = new Vue({
       el: '#app',
       template: `<div id="app">
           <h1 @click="countClick">count:{{count}}</h1>
           <h1 v-text="count"></h1>
+          <h1 @click="changeArrObj">arr[2]:{{arr[2]}}</h1>
+          <h1 @click="changeArrChildArr">arr[3]:{{arr[3]}}</h1>
         </div>
         `,
+      created() {
+        console.log('comp create')
+      },
+      mounted() {
+        console.log('comp mounted')
+      },
       data(){
         return {
           count: 0,
           appName: 'vue',
-          arr: ['1', '2', {name: 'fff'}],
+          arr: ['1', '2', {name: 'fff'}, [1,2]],
           appObj: {
             appObjName: 'app vue'
           }
@@ -65,21 +77,9 @@
         console.log(this.arr)
       },
       methods: {
-        changeArrLength() {
-          this.arr.length = 1
-          console.log('arr====', this.arr)
-        },
-        changeArrByIndex() {
-          this.arr[0] = 'd'
-          this.arr = [...this.arr, { name: 'whh'}]
-          console.log('arr====', this.arr)
-        },
-        countClick() {
-          this.count += 1
-        }
+
       }
     })
-    console.log(app)
   </script>
 </body>
 </html>

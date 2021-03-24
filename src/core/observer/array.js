@@ -47,9 +47,11 @@ methodsToPatch.forEach(function (method) {
         inserted = args
         break
       case 'splice':
+        // []splice(index, delLength, insertItem, insertItem) 获取除前两个外的参数
         inserted = args.slice(2)
         break
     }
+    console.log('inserted====', inserted)
     if (inserted) ob.observeArray(inserted)
     // notify change
     // 通知更新

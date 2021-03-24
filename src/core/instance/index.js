@@ -22,5 +22,4 @@ stateMixin(Vue) // $set/$delete/$watch
 eventsMixin(Vue) // $on/$off/$once/$emit
 lifecycleMixin(Vue) // $forceUpdate/_update()/$destroy
 renderMixin(Vue) // $nextTick /_render
-console.log(' 实现实例方法和属性')
 export default Vue

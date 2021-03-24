@@ -51,15 +51,15 @@ export class Observer {
       // 覆盖数组实例的原型
       // can we use __proto__? 是否支持__proto__属性
       // var hasProto = '__proto__' in {};
-      // if (hasProto) {
-      //   // 如果有__proto__ 直接替换原型
-      //   protoAugment(value, arrayMethods)
-      // } else {
-      //   // 如果没有__proto__，则把方法拷贝到 数组实例上
-      //   copyAugment(value, arrayMethods, arrayKeys)
-      // }
-      // this.observeArray(value)
-      this.walk(value)
+      if (hasProto) {
+        // 如果有__proto__ 直接替换原型
+        protoAugment(value, arrayMethods)
+      } else {
+        // 如果没有__proto__，则把方法拷贝到 数组实例上
+        copyAugment(value, arrayMethods, arrayKeys)
+      }
+      this.observeArray(value)
+      // this.walk(value)
     } else {
       // 对象处理
       this.walk(value)
