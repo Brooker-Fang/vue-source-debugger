@@ -191,7 +191,7 @@ export function defineReactive (
           }
         }
       }
-      console.log(`${key}----get`)
+      // console.log(`${key}----get`)
       return value
     },
     set: function reactiveSetter (newVal) {
@@ -212,7 +212,7 @@ export function defineReactive (
         val = newVal
       }
       childOb = !shallow && observe(newVal)
-      console.log('set')
+      // console.log('set')
       dep.notify()
     }
   })

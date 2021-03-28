@@ -12,6 +12,15 @@
   <script>
      Vue.component('comp', {
       name: 'comp',
+      props: {
+        key: String,
+        key2: {
+          required: true,
+          default: {}
+        },
+        key3: () => [1,2,3]
+      },
+      inject: ['count'],
       template: '<div><child @child-click="childClick"></child></div>',
       components: {
         child: {
@@ -47,16 +56,24 @@
           }
         }
       },
+      methods: {
+        childClick() {
+          console.log('childClick')
+        }
+      }
     })
     const app = new Vue({
       el: '#app',
       template: `<div id="app">
           <h1 @click="countClick">count:{{count}}</h1>
-          <h1 v-text="count"></h1>
-          <h1 @click="changeArrObj">arr[2]:{{arr[2]}}</h1>
-          <h1 @click="changeArrChildArr">arr[3]:{{arr[3]}}</h1>
+          <comp></comp>
         </div>
         `,
+      provide() {
+        return {
+          count: this.count
+        }
+      },
       created() {
         console.log('comp create')
       },
@@ -77,7 +94,9 @@
         console.log(this.arr)
       },
       methods: {
-
+        countClick() {
+          console.log('countClick')
+        }
       }
     })
   </script>

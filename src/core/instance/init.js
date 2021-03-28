@@ -49,7 +49,7 @@ export function initMixin (Vue: Class<Component>) {
     const vm: Component = this
     // a uid
     vm._uid = uid++
-
+    debugger
     let startTag, endTag
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
@@ -58,15 +58,19 @@ export function initMixin (Vue: Class<Component>) {
       mark(startTag)
     }
     // a flag to avoid this being observed
+    // 标记组件的数据已经进行过响应式处理了
     vm._isVue = true
     // merge options
     // 合并选项
+    // 如果是组件
     if (options && options._isComponent) {
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
       initInternalComponent(vm, options)
     } else {
+      // mergeOptions 格式化了 props、inject、directive
+      // ...TODO
       vm.$options = mergeOptions(
         resolveConstructorOptions(vm.constructor),
         options || {},
@@ -74,6 +78,7 @@ export function initMixin (Vue: Class<Component>) {
       )
     }
     /* istanbul ignore else */
+    // 如果不是生产环境 
     if (process.env.NODE_ENV !== 'production') {
       initProxy(vm)
     } else {
@@ -99,7 +104,7 @@ export function initMixin (Vue: Class<Component>) {
     }
 
     if (vm.$options.el) {
-      vm.$mount(vm.$options.el)
+      vm.$mount(vm.$options.el) // $mount 在src\platforms\web\entry-runtime-with-compiler.js文件中执行了扩展
     }
   }
 }

@@ -295,6 +295,15 @@ export function validateComponentName (name: string) {
  * Ensure all props option syntax are normalized into the
  * Object-based format.
  */
+/*  props: {
+      key: String,
+      key2: {
+        required: true,
+        default: {}
+      },
+      key3: [1,2,3]
+    } 
+*/
 function normalizeProps (options: Object, vm: ?Component) {
   const props = options.props
   if (!props) return
@@ -327,6 +336,7 @@ function normalizeProps (options: Object, vm: ?Component) {
     )
   }
   options.props = res
+  console.log('options.props=====', res)
 }
 
 /**
@@ -397,9 +407,11 @@ export function mergeOptions (
   if (typeof child === 'function') {
     child = child.options
   }
-
+  // 处理props
   normalizeProps(child, vm)
+  // 格式化 inject 为 {count: {from: "count"}, key: {from: 'key'}}
   normalizeInject(child, vm)
+  // 
   normalizeDirectives(child)
 
   // Apply extends and mixins on the child options,

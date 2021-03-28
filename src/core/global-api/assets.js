@@ -7,6 +7,8 @@ export function initAssetRegisters (Vue: GlobalAPI) {
   /**
    * Create asset registration methods.
    */
+  // ASSET_TYPES = ['component','directive','filter'] 
+  // 
   ASSET_TYPES.forEach(type => {
     Vue[type] = function (
       id: string,
@@ -19,10 +21,13 @@ export function initAssetRegisters (Vue: GlobalAPI) {
         if (process.env.NODE_ENV !== 'production' && type === 'component') {
           validateComponentName(id)
         }
+        // Vue.component('component', {...options})
+        // 实际上是调用Vue.extend(options)
         if (type === 'component' && isPlainObject(definition)) {
           definition.name = definition.name || id
           definition = this.options._base.extend(definition)
         }
+        // Vue.directive('dir', {})
         if (type === 'directive' && typeof definition === 'function') {
           definition = { bind: definition, update: definition }
         }

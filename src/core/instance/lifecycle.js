@@ -69,7 +69,6 @@ export function lifecycleMixin(Vue: Class<Component>) {
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
     // __patch__函数在 platforms/web/runtime/index.js定义
-    debugger
     if (!prevVnode) {
       // initial render
       vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */);
@@ -350,6 +349,7 @@ export function deactivateChildComponent(vm: Component, direct?: boolean) {
 
 export function callHook(vm: Component, hook: string) {
   // #7573 disable dep collection when invoking lifecycle hooks
+  // 执行生命周期时， 禁止dep做收集？
   pushTarget();
   const handlers = vm.$options[hook];
   const info = `${hook} hook`;
