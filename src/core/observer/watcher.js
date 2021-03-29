@@ -50,9 +50,11 @@ export default class Watcher {
     isRenderWatcher?: boolean
   ) {
     this.vm = vm
+    // 如果是渲染watcher，_watcher 设置为当前watcher实例
     if (isRenderWatcher) {
       vm._watcher = this
     }
+    // 如果不是渲染watcher, _watcher 为数组
     vm._watchers.push(this)
     // options
     if (options) {
@@ -76,6 +78,7 @@ export default class Watcher {
       ? expOrFn.toString()
       : ''
     // parse expression for getter
+    // 如果第二个参数传入的是函数，设置为this.getter
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
     } else {
@@ -113,6 +116,7 @@ export default class Watcher {
     } finally {
       // "touch" every property so they are all tracked as
       // dependencies for deep watching
+      // 是否深入监听
       if (this.deep) {
         traverse(value)
       }
@@ -168,10 +172,10 @@ export default class Watcher {
     // computed
     if (this.lazy) {
       this.dirty = true
-    } else if (this.sync) {
+    } else if (this.sync) { // 同步执行
       this.run()
     } else {
-      // 入队
+      // 异步更新 入队列
       queueWatcher(this)
     }
   }

@@ -180,7 +180,7 @@ function initComputed (vm: Component, computed: Object) {
   const watchers = vm._computedWatchers = Object.create(null)
   // computed properties are just getters during SSR
   const isSSR = isServerRendering()
-
+  // 对computed里的每个属性 生成对应的watcher实例，并标记lazy为true，即第一次不执行get
   for (const key in computed) {
     const userDef = computed[key]
     const getter = typeof userDef === 'function' ? userDef : userDef.get
@@ -190,7 +190,7 @@ function initComputed (vm: Component, computed: Object) {
         vm
       )
     }
-
+    // 不是服务端渲染
     if (!isSSR) {
       // create internal watcher for the computed property.
       watchers[key] = new Watcher(

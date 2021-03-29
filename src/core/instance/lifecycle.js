@@ -71,6 +71,7 @@ export function lifecycleMixin(Vue: Class<Component>) {
     // __patch__函数在 platforms/web/runtime/index.js定义
     if (!prevVnode) {
       // initial render
+      // 第一个参数 vm.$el 为真实dom
       vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */);
     } else {
       // updates
@@ -212,7 +213,7 @@ export function mountComponent(
         }
       },
     },
-    true /* isRenderWatcher */
+    true /* isRenderWatcher 是否是渲染Watcher，如果$watch api，则传false*/
   );
   hydrating = false;
 

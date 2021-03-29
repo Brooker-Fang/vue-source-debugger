@@ -59,7 +59,9 @@ export function _createElement (
     )
     return createEmptyVNode()
   }
+  // <component v-bind:is="com" ></component>
   // object syntax in v-bind
+  // 会把is属性的 组件存到tag里
   if (isDef(data) && isDef(data.is)) {
     tag = data.is
   }

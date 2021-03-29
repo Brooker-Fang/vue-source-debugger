@@ -40,7 +40,7 @@ Vue.prototype.$mount = function (
   // render不存在才判断template
   // 先判断render > 在判断template > 最后判断el
   if (!options.render) {
-    // render存在，获取template模板
+    // render不存在，获取template模板
     let template = options.template
     if (template) {
       // 3个嵌套判断
