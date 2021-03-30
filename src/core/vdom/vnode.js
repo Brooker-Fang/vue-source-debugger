@@ -39,29 +39,29 @@ export default class VNode {
     componentOptions?: VNodeComponentOptions,
     asyncFactory?: Function
   ) {
-    this.tag = tag
-    this.data = data
-    this.children = children
-    this.text = text
-    this.elm = elm
-    this.ns = undefined
-    this.context = context
-    this.fnContext = undefined
-    this.fnOptions = undefined
-    this.fnScopeId = undefined
-    this.key = data && data.key
-    this.componentOptions = componentOptions
-    this.componentInstance = undefined
-    this.parent = undefined
-    this.raw = false
-    this.isStatic = false
-    this.isRootInsert = true
-    this.isComment = false
-    this.isCloned = false
-    this.isOnce = false
-    this.asyncFactory = asyncFactory
-    this.asyncMeta = undefined
-    this.isAsyncPlaceholder = false
+    this.tag = tag // 当前节点标签名
+    this.data = data // 节点数据
+    this.children = children // 子节点
+    this.text = text // 节点文本
+    this.elm = elm // 对应的dom
+    this.ns = undefined // 命名空间
+    this.context = context // 当前节点上下文
+    this.fnContext = undefined // 函数化组件上下文
+    this.fnOptions = undefined // 函数化组件配置项
+    this.fnScopeId = undefined // 函数化组件 scope id
+    this.key = data && data.key // 
+    this.componentOptions = componentOptions // 组件配置项
+    this.componentInstance = undefined // 组件实例
+    this.parent = undefined // 父节点
+    this.raw = false // 是否是原生html元素 或者 文本节点
+    this.isStatic = false // 静态节点标记
+    this.isRootInsert = true // 是否作为是根节点插入
+    this.isComment = false // 是否注释节点
+    this.isCloned = false // 是否为克隆节点
+    this.isOnce = false // 是否为v-once节点
+    this.asyncFactory = asyncFactory // 
+    this.asyncMeta = undefined //
+    this.isAsyncPlaceholder = false //
   }
 
   // DEPRECATED: alias for componentInstance for backwards compat.

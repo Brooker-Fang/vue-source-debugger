@@ -33,6 +33,7 @@ function flushCallbacks () {
 // where microtasks have too high a priority and fire in between supposedly
 // sequential events (e.g. #4521, #6690, which have workarounds)
 // or even between bubbling of the same event (#6566).
+// 定义异步执行策略
 let timerFunc
 
 // The nextTick behavior leverages the microtask queue, which can be accessed
@@ -42,6 +43,8 @@ let timerFunc
 // completely stops working after triggering a few times... so, if native
 // Promise is available, we will use it:
 /* istanbul ignore next, $flow-disable-line */
+// 如果支持Promise，则使用Promise
+// 如果不支持，依次降级为MutationObserver、setImmediate、setTimeout执行
 if (typeof Promise !== 'undefined' && isNative(Promise)) {
   const p = Promise.resolve()
   timerFunc = () => {
@@ -87,10 +90,12 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
   }
 }
 
-// 将cb函数放入回调队列队尾
+// 将cb函数放入callbacks
 export function nextTick (cb?: Function, ctx?: Object) {
   let _resolve
+  // 封装高阶函数
   callbacks.push(() => {
+    // 捕获异常
     if (cb) {
       try {
         cb.call(ctx)
@@ -101,6 +106,7 @@ export function nextTick (cb?: Function, ctx?: Object) {
       _resolve(ctx)
     }
   })
+  // 如果是空闲状态
   if (!pending) {
     pending = true
     // 异步执行函数

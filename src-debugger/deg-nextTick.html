@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="../dist/vue.js"></script>
+  <script>
+     let vm = new Vue({
+       el: '#app',
+       template: `
+        <div id="count" @click="countClick">{{count}}</div>
+       `,
+       data() {
+         return {
+           count: 0
+         }
+       },
+       methods: {
+         countClick() {
+          //  callbacks = [n1, n2]
+          this.$nextTick(() => {
+            console.log('count innerHTML===', count.innerHTML)
+          })
+          this.count = 1
+          console.log('count===', this.count)
+          this.count = 2
+          console.log('count===', this.count)
+          this.count = 3
+          console.log('count===', this.count)
+          console.log('count innerHTML===', count.innerHTML)
+          this.$nextTick(() => {
+          console.log('count innerHTML===', count.innerHTML)
+          })
+         }
+       }
+     })
+  </script>
+</body>
+</html>

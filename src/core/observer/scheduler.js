@@ -113,6 +113,7 @@ function flushSchedulerQueue () {
   }
 
   // keep copies of post queues before resetting state
+  // 复制
   const activatedQueue = activatedChildren.slice()
   const updatedQueue = queue.slice()
 
@@ -166,7 +167,8 @@ function callActivatedHooks (queue) {
 export function queueWatcher (watcher: Watcher) {
   // 去重
   const id = watcher.id
-  // 不存在才入队
+  // 判断是否已存在队列里，只有不存在才入队
+  // 同样的watcher不会进入第二次
   if (has[id] == null) {
     has[id] = true
     if (!flushing) {
@@ -181,6 +183,7 @@ export function queueWatcher (watcher: Watcher) {
       queue.splice(i + 1, 0, watcher)
     }
     // queue the flush
+    // 是否空闲
     if (!waiting) {
       waiting = true
 

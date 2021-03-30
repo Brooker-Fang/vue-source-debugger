@@ -233,7 +233,7 @@ export function createPatchFunction (backend) {
       // it should've created a child instance and mounted it. the child
       // component also has set the placeholder vnode's elm.
       // in that case we can just return the element and be done.
-      // 如果是组件实例
+      // 如果是组件实例，初始化组件
       if (isDef(vnode.componentInstance)) {
         initComponent(vnode, insertedVnodeQueue)
         insert(parentElm, vnode.elm, refElm)
@@ -313,6 +313,7 @@ export function createPatchFunction (backend) {
   }
 
   function isPatchable (vnode) {
+    // 
     while (vnode.componentInstance) {
       vnode = vnode.componentInstance._vnode
     }
