@@ -22,20 +22,28 @@
        },
        methods: {
          countClick() {
-          //  callbacks = [n1, n2]
+          // callbacks = [n1, flushSchedulerQueue, p1, n2]
           this.$nextTick(() => {
-            console.log('count innerHTML===', count.innerHTML)
+            this.count = 100 // 触发set，将watcher推入flushSchedulerQueue, 
+            // 因为存在同样的watcher，所以此时flushSchedulerQueue还是只有一个watcher，并且flushSchedulerQueue在执行时，count值为100
+            console.log('count innerHTML2===', count.innerHTML)
           })
-          this.count = 1
+          this.count = 1 // 这里触发watcher 执行 queueWatcher，将watcher推入queue，并执行nextTick(flushSchedulerQueue)，即将flushSchedulerQueue推入callbacks，并加入微任务队列
           console.log('count===', this.count)
           this.count = 2
           console.log('count===', this.count)
           this.count = 3
           console.log('count===', this.count)
-          console.log('count innerHTML===', count.innerHTML)
-          this.$nextTick(() => {
-          console.log('count innerHTML===', count.innerHTML)
+          console.log('count innerHTML1===', count.innerHTML)
+          Promise.resolve().then(() => {
+            // 前面触发的watcher更新，已经将callbacks
+            console.log('p1 innerHTML===', count.innerHTML)
           })
+          this.$nextTick(() => {
+            console.log('count innerHTML3===', count.innerHTML)
+          })
+          // 此时微任务队列 [flushCallbacks, p1] 即 [[...callbacks], p1]
+          // flushCallbacks 即 callbacks
          }
        }
      })
