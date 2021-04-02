@@ -35,19 +35,24 @@ import {
 // inline hooks to be invoked on component VNodes during patch
 const componentVNodeHooks = {
   init (vnode: VNodeWithData, hydrating: boolean): ?boolean {
+    // 如果实例已存在， 一般是keep-live
     if (
       vnode.componentInstance &&
       !vnode.componentInstance._isDestroyed &&
       vnode.data.keepAlive
     ) {
       // kept-alive components, treat as a patch
+      // 
       const mountedNode: any = vnode // work around flow
       componentVNodeHooks.prepatch(mountedNode, mountedNode)
     } else {
+      // 新实例创建
+      // createComponentInstanceForVnode 通过new vnode.componentOptions.Ctor(options)获取组件实例
       const child = vnode.componentInstance = createComponentInstanceForVnode(
         vnode,
         activeInstance
       )
+      // 子组件挂载
       child.$mount(hydrating ? vnode.elm : undefined, hydrating)
     }
   },
@@ -97,7 +102,7 @@ const componentVNodeHooks = {
 }
 
 const hooksToMerge = Object.keys(componentVNodeHooks)
-
+// 创建组件的虚拟dom
 export function createComponent (
   Ctor: Class<Component> | Function | Object | void,
   data: ?VNodeData,
@@ -126,6 +131,7 @@ export function createComponent (
   }
 
   // async component
+  // 异步组件
   let asyncFactory
   if (isUndef(Ctor.cid)) {
     asyncFactory = Ctor
@@ -143,7 +149,7 @@ export function createComponent (
       )
     }
   }
-
+  // 处理组件的 各种属性和事件
   data = data || {}
 
   // resolve constructor options in case global mixins are applied after
@@ -151,6 +157,7 @@ export function createComponent (
   resolveConstructorOptions(Ctor)
 
   // transform component v-model data into props & events
+  // 双向绑定的额外处理
   if (isDef(data.model)) {
     transformModel(Ctor.options, data)
   }
@@ -165,11 +172,14 @@ export function createComponent (
 
   // extract listeners, since these needs to be treated as
   // child component listeners instead of DOM listeners
+  // 事件
   const listeners = data.on
   // replace with listeners with .native modifier
   // so it gets processed during parent component patch.
+  // nativeOn是原生事件，on是自定义事件
   data.on = data.nativeOn
 
+  // 抽象组件
   if (isTrue(Ctor.options.abstract)) {
     // abstract components do not keep anything
     // other than props & listeners & slot
@@ -183,6 +193,8 @@ export function createComponent (
   }
 
   // install component management hooks onto the placeholder node
+  // 安装组件的钩子，hooks: {init: ..., insert: , prepatch: , destory}
+  // 后面再 执行相应操作后，执行相对于的钩子
   installComponentHooks(data)
 
   // return a placeholder vnode

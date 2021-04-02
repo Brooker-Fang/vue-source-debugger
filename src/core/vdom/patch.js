@@ -146,6 +146,8 @@ export function createPatchFunction (backend) {
     }
 
     vnode.isRootInsert = !nested // for transition enter check
+    // 如果是遇到的是 自定义组件，创建自定义组件，且不往下 执行直接返回
+    // 即自定义组件 会在父组件执行createElm时，遇到此自定义组件，实例化 并执行挂载
     if (createComponent(vnode, insertedVnodeQueue, parentElm, refElm)) {
       return
     }
@@ -226,7 +228,11 @@ export function createPatchFunction (backend) {
     let i = vnode.data
     if (isDef(i)) {
       const isReactivated = isDef(vnode.componentInstance) && i.keepAlive
+      // 获取自定义组件的管理钩子
       if (isDef(i = i.hook) && isDef(i = i.init)) {
+        // 执行init钩子
+        // init 主要执行组件的实例化 以及 $mount挂载
+        // vnode.componentInstance在init执行后 变为组件的实例
         i(vnode, false /* hydrating */)
       }
       // after calling the init hook, if the vnode is a child component
@@ -235,7 +241,9 @@ export function createPatchFunction (backend) {
       // in that case we can just return the element and be done.
       // 如果是组件实例，初始化组件
       if (isDef(vnode.componentInstance)) {
+        // 
         initComponent(vnode, insertedVnodeQueue)
+        // 执行插入dom操作
         insert(parentElm, vnode.elm, refElm)
         if (isTrue(isReactivated)) {
           reactivateComponent(vnode, insertedVnodeQueue, parentElm, refElm)
