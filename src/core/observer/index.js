@@ -224,21 +224,25 @@ export function defineReactive (
  * already exist.
  */
 export function set (target: Array<any> | Object, key: any, val: any): any {
+  // 判断传入的target是否是undefined 或者 原始值，是的报警告
   if (process.env.NODE_ENV !== 'production' &&
     (isUndef(target) || isPrimitive(target))
   ) {
     warn(`Cannot set reactive property on undefined, null, or primitive value: ${(target: any)}`)
   }
+  // 如果target是数组，直接掉splice触发更新
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.length = Math.max(target.length, key)
     target.splice(key, 1, val)
     return val
   }
+  // 如果 key在target里已经存在，直接赋值
   if (key in target && !(key in Object.prototype)) {
     target[key] = val
     return val
   }
   const ob = (target: any).__ob__
+  // 如果是根实例 或者 $date 不执行
   if (target._isVue || (ob && ob.vmCount)) {
     process.env.NODE_ENV !== 'production' && warn(
       'Avoid adding reactive properties to a Vue instance or its root $data ' +
@@ -246,11 +250,14 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     )
     return val
   }
+  // 不存在ob，即不是响应式数据，直接赋值
   if (!ob) {
     target[key] = val
     return val
   }
+  // 新增的属性 做响应式处理
   defineReactive(ob.value, key, val)
+  // 触发ob更新
   ob.dep.notify()
   return val
 }

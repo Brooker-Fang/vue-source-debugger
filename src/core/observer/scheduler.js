@@ -82,7 +82,6 @@ function flushSchedulerQueue () {
   // 3. If a component is destroyed during a parent component's watcher run,
   //    its watchers can be skipped.
   queue.sort((a, b) => a.id - b.id)
-  debugger
   // do not cache length because more watchers might be pushed
   // as we run existing watchers
   for (index = 0; index < queue.length; index++) {
@@ -167,7 +166,6 @@ function callActivatedHooks (queue) {
 export function queueWatcher (watcher: Watcher) {
   // 去重
   const id = watcher.id
-  debugger
   // 判断是否已存在队列里，只有不存在才入队
   // 同样的watcher不会进入第二次
   if (has[id] == null) {

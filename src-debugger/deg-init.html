@@ -64,9 +64,17 @@
     })
     const app = new Vue({
       el: '#app',
-      template: `<div id="app">
-          <h1 @click="countClick">count:{{count}}</h1>
-          <comp></comp>
+      template: `
+        <div id="app">
+          <h1 @click="countClick">
+            count:{{count}}
+          </h1>
+          <div>
+            <p>
+              <comp>
+              </comp>
+            </p>
+          </div>
         </div>
         `,
       provide() {
