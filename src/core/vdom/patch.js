@@ -226,7 +226,8 @@ export function createPatchFunction (backend) {
   }
 
   function createComponent (vnode, insertedVnodeQueue, parentElm, refElm) {
-    let i = vnode.data
+    let i = vnode.dat
+    
     if (isDef(i)) {
       const isReactivated = isDef(vnode.componentInstance) && i.keepAlive
       // 获取自定义组件的管理钩子
@@ -240,7 +241,7 @@ export function createPatchFunction (backend) {
       // it should've created a child instance and mounted it. the child
       // component also has set the placeholder vnode's elm.
       // in that case we can just return the element and be done.
-      // 如果是组件实例，初始化组件
+      // 如果存在组件实例，说明是自定义组件，则初始化组件
       if (isDef(vnode.componentInstance)) {
         // 执行组件初始化
         initComponent(vnode, insertedVnodeQueue)
@@ -841,9 +842,9 @@ export function createPatchFunction (backend) {
           oldElm._leaveCb ? null : parentElm,
           nodeOps.nextSibling(oldElm) // 获取旧dom的兄弟节点，以便新生成的dom插入到此节点之前
         )
-        debugger
         // update parent placeholder node element, recursively
         // 更新父元素的 占位元素
+        // ...TODO解析
         if (isDef(vnode.parent)) {
           let ancestor = vnode.parent
           const patchable = isPatchable(vnode)

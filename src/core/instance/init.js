@@ -88,7 +88,7 @@ export function initMixin (Vue: Class<Component>) {
     vm._self = vm
     initLifecycle(vm) // $parent $root $children
     initEvents(vm) // 事件监听
-    initRender(vm) // $slots/$createElement/vm._c
+    initRender(vm) // $slots属性/$createElement/vm._c
     callHook(vm, 'beforeCreate')
     initInjections(vm) // resolve injections before data/props
     initState(vm) // 核心：数据初始化

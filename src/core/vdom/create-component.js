@@ -113,7 +113,7 @@ export function createComponent (
   if (isUndef(Ctor)) {
     return
   }
-
+  // 获取构造函数
   const baseCtor = context.$options._base
 
   // plain options object: turn it into a constructor

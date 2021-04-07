@@ -26,14 +26,18 @@ const ALWAYS_NORMALIZE = 2
 // wrapper function for providing a more flexible interface
 // without getting yelled at by flow
 export function createElement (
-  context: Component,
+  context: Component, // _c函数 和 $createElement函数做了柯里化处理，第一个参数都是 vm，vue实例
   tag: any,
   data: any,
   children: any,
   normalizationType: any,
-  alwaysNormalize: boolean
+  alwaysNormalize: boolean // true是用户写的render函数
 ): VNode | Array<VNode> {
+  // 对参数做格式化处理，都转为3个参数的形式，如： h('div', { attrs: {id: 'content'}}, [h('span', {on: { click: ... }}, 'span内容')])
+  // 因为参数可能有俩个 或者 三个 即传入了tag和data 或者 tag、data、children, 如果只传入的两个 需要转为3个的形式
   if (Array.isArray(data) || isPrimitive(data)) {
+    // 如果data是数组或者原始值，说明只传入了两个参数。如：h('h1', [h('div', 'message')])
+    // 则转为 h('h1', undefined, [h('div', undefined ,'message')])
     normalizationType = children
     children = data
     data = undefined
