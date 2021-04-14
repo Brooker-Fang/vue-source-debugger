@@ -480,12 +480,14 @@ export function createPatchFunction (backend) {
       } else if (sameVnode(oldStartVnode, newEndVnode)) { // Vnode moved right
         // 老开头和新结尾
         patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue, newCh, newEndIdx)
+        // 更新后 将dom插入到当前旧结束索引 指向的dom节点的后面
         canMove && nodeOps.insertBefore(parentElm, oldStartVnode.elm, nodeOps.nextSibling(oldEndVnode.elm))
         oldStartVnode = oldCh[++oldStartIdx]
         newEndVnode = newCh[--newEndIdx]
       } else if (sameVnode(oldEndVnode, newStartVnode)) { // Vnode moved left
         // 老结束和新开始
         patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue, newCh, newStartIdx)
+        // 更新后 将dom插入到当前旧开始索引 指向的dom节点的前面
         canMove && nodeOps.insertBefore(parentElm, oldEndVnode.elm, oldStartVnode.elm)
         oldEndVnode = oldCh[--oldEndIdx]
         newStartVnode = newCh[++newStartIdx]
@@ -495,7 +497,7 @@ export function createPatchFunction (backend) {
         idxInOld = isDef(newStartVnode.key)
           ? oldKeyToIdx[newStartVnode.key]
           : findIdxInOld(newStartVnode, oldCh, oldStartIdx, oldEndIdx)
-          // 没找到，创建
+          // 没找到，说明是新增的节点，创建dom，并插入到旧的开始索引所在dom元素的前面
         if (isUndef(idxInOld)) { // New element
           createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, newStartIdx)
         } else {
